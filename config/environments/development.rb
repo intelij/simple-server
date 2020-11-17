@@ -63,6 +63,8 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   config.active_job.queue_adapter = :inline
+
+  config.logger = ActiveSupport::Logger.new("log/#{Rails.env}.log")
 end
 
 # Set a longer session timeout to make things easier on developers
