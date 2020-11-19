@@ -12,7 +12,7 @@ blocks:
             - yarn install
             - bundle install --deployment --path vendor/bundle
             - cache store
-            - 'BRANCH=$SEMAPHORE_GIT_BRANCH bundle exec cap bangladesh:demo deploy'
+            - BRANCH=$SEMAPHORE_GIT_BRANCH bundle exec cap bangladesh:demo deploy
       secrets:
         - name: semaphore-deploy-key
       prologue:
