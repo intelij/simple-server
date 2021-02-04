@@ -31,7 +31,7 @@ namespace :db do
       abort "Are you sure you want to truncate ALL TABLES? If so, rerun with FORCE_TRUNCATE set as an env var"
     end
     Seed::ConsoleLogger.announce("hey")
-    internal_tables = ["schema_migrations", "ar_internal_metadata"]
+    internal_tables = ["schema_migrations", "data_migrations", "ar_internal_metadata"]
     connection = ActiveRecord::Base.connection
     app_tables = connection.tables.reject { |table| table.in?(internal_tables) }.sort
     app_tables.each do |table|
