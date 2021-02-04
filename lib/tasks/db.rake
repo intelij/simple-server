@@ -23,6 +23,24 @@ namespace :db do
 
     RefreshMaterializedViews.call
   end
+
+  desc "Truncate ALL application tables"
+  task truncate: :environment do
+    abort "Can't run this task in #{SimpleServer.env}!" if SimpleServer.env.production?
+    unless ENV.key?("FORCE_TRUNCATE")
+      abort "Are you sure you want to truncate ALL TABLES? If so, rerun with FORCE_TRUNCATE set as an env var"
+    end
+    Seed::ConsoleLogger.announce("hey")
+    internal_tables = ["schema_migrations", "ar_internal_metadata"]
+    connection = ActiveRecord::Base.connection
+    app_tables = connection.tables.reject { |table| table.in?(internal_tables) }.sort
+    app_tables.each do |table|
+      command = "TRUNCATE #{table} CASCADE"
+      puts command
+      connection.execute(command)
+    end
+    puts "Done!"
+  end
 end
 
 Rake::Task["db:seed"].enhance do
